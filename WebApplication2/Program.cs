@@ -1,16 +1,8 @@
-using WebApplication2;
-
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 
-//builder.Services.AddSingleton<TwoCaptchaSolver>(sp =>
-//{
-//    // Здесь нужно использовать ваш реальный API ключ 2Captcha
-//    string apiKey = "5eff7a0509edf4c26a2b174670242016";
-//    return new TwoCaptchaSolver(apiKey);
-//});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -32,6 +24,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(builder =>
+{
+    builder.WithOrigins("http://localhost:3000", "http://localhost:3001")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
